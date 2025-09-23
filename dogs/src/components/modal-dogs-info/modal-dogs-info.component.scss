@@ -1,0 +1,51 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  background-color: #fff;
+  cursor: pointer;
+
+  &__image {
+    width: 100%;
+    object-fit: cover;
+  }
+
+  &__content {
+    padding: 16px;
+    text-align: center;
+
+    .card__title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #333;
+    }
+
+    .card__subtitle {
+      font-size: 0.95rem;
+      font-weight: 400;
+      color: #666;
+      margin: 4px 0;
+
+      &:first-of-type {
+        margin-top: 0;
+      }
+
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    width: 100%;
+    max-width: 340px;
+
+    &__image {
+      height: 150px;
+    }
+  }
+}
