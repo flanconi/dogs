@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { enviroment } from '../shared/enviroment/enviroment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subject, takeUntil } from 'rxjs';
-import { DogsBreed } from '../shared/model/dogsBreed.model';
+import { DogsBreed, DogsBreedDetails } from '../shared/model/dogsBreed.model';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +30,7 @@ export class DogService {
 
   getBreedDetails(breedId: number) {
     return this.http
-      .get<any>(
+      .get<DogsBreedDetails>(
         `${this.url}breeds/${breedId}`, this.header
       )
       .pipe(takeUntil(this.unsubscribe$));
