@@ -1,9 +1,27 @@
-<select [(ngModel)]="breedSelected" (ngModelChange)="onBreedChange($event)">
-    <option [ngValue]="null">Select a breed</option>
-    <option *ngFor="let breed of breeds" [ngValue]="breed">{{ breed.name }}</option>
-</select>
-<div *ngFor="let breed of breedList" (click)="getDogDetails(breed.id)">
-  <h2>{{ breed.name }}</h2>
-  <p>Origin: {{ breed.origin ? breed.origin : 'Unknown' }}</p>
-  <img [src]="breed.image.url" [alt]="breed.name" width="250px"/>
+<div class="container">
+  <div class="actions-bar">
+    <div class="search-bar">
+      <label for="search">Filter by:</label>
+      <select id="search" [(ngModel)]="breedSelected" (ngModelChange)="onBreedChange($event)">
+        <option [ngValue]="null">Select a breed</option>
+        <option *ngFor="let breed of breeds" [ngValue]="breed">{{ breed.name }}</option>
+      </select>
+    </div>
+    <div class="buttons">
+      <button class="btn btn-add">➕ Adicionar</button>
+    </div>
+  </div>
+  <div class="cards-grid">
+    <div class="card" *ngFor="let breed of breedList">
+      <img [src]="breed.image.url" [alt]="breed.name" class="card__image" />
+      <div class="card__content">
+        <h3 class="card__title" (click)="getDogDetails(breed)">{{breed.name}}</h3>
+        <p class="card__subtitle">{{breed.origin ? breed.origin : 'Unknown'}}</p>
+        <div class="card__actions">
+          <button class="btn btn-edit" (click)="modifyBreed(breed)">✏️ Modificar</button>
+          <button class="btn btn-delete" (click)="deleteBreed(breed)">🗑️ Deletar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
