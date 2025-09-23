@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { enviroment } from '../shared/enviroment/enviroment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subject, takeUntil } from 'rxjs';
+import { DogsBreed } from '../shared/model/dogsBreed.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,13 +22,13 @@ export class DogService {
 
   getDogsBreed() {
     return this.http
-      .get<any>(
+      .get<DogsBreed[]>(
         `${this.url}breeds`, this.header
       )
       .pipe(takeUntil(this.unsubscribe$));
   }
 
-  getBreedDetails(breedId: string) {
+  getBreedDetails(breedId: number) {
     return this.http
       .get<any>(
         `${this.url}breeds/${breedId}`, this.header
@@ -35,10 +36,10 @@ export class DogService {
       .pipe(takeUntil(this.unsubscribe$));
   }
 
-  searchdogsByBreed(breedId: string) {
+  searchDogsByBreed(breed: string) {
     return this.http
-      .get<any>(
-        `${this.url}breeds/search?q=${breedId}`, this.header
+      .get<DogsBreed[]>(
+        `${this.url}breeds/search?q=${breed}`, this.header
       )
       .pipe(takeUntil(this.unsubscribe$));
   }
