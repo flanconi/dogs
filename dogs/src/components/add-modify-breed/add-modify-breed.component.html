@@ -1,0 +1,69 @@
+<form [formGroup]="form" class="dog-form">
+  <h3 class="form-title">{{ form.value?.id ? 'Edit Dog' : 'New Dog' }}</h3>
+
+  <div class="form-field">
+    <label for="name">Name</label>
+    <input
+      id="name"
+      type="text"
+      formControlName="name"
+      placeholder="e.g., Border Collie"
+    />
+  </div>
+
+  <div class="form-field">
+    <label for="origin">Origin</label>
+    <input id="origin" type="text" formControlName="origin" placeholder="e.g., United Kingdom" />
+  </div>
+
+  <div class="form-field">
+    <label for="lifeSpan">Life expectancy</label>
+    <input id="lifeSpan" type="text" formControlName="lifeSpan" placeholder="e.g., 10 - 12 years" />
+    <small class="hint">Format: "10 - 12 years"</small>
+  </div>
+
+  <div class="form-field">
+    <label for="temperament">Temperament</label>
+    <textarea
+      id="temperament"
+      rows="3"
+      formControlName="temperament"
+      placeholder="e.g., Friendly, Active"
+    ></textarea>
+  </div>
+
+  <div class="form-field">
+    <label for="bredFor">Bred For</label>
+    <textarea
+      id="bredFor"
+      rows="3"
+      formControlName="bredFor"
+      placeholder="e.g., Herding"
+    ></textarea>
+  </div>
+
+  <div class="form-field">
+    <label for="breadGroup">Breed Group</label>
+    <textarea
+      id="breadGroup"
+      rows="3"
+      formControlName="breadGroup"
+      placeholder="e.g., Working"
+    ></textarea>
+  </div>
+
+  <div class="form-field">
+    <label for="referenceImageId">Image URL</label>
+    <input
+      id="referenceImageId"
+      type="text"
+      formControlName="referenceImageId"
+      placeholder="e.g., https://example.com/dog.jpg"
+    />
+  </div>
+
+  <div class="actions">
+    <button type="button" mat-dialog-close>Cancel</button>
+    <button type="submit"  (click)="closeAndSave()">Save</button>
+  </div>
+</form>
