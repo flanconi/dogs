@@ -8,17 +8,17 @@
       </select>
     </div>
     <div class="buttons">
-      <button class="btn btn-add">➕ Adicionar</button>
+      <button class="btn btn-add" (click)="createNewBreed()">➕ Adicionar</button>
     </div>
   </div>
   <div class="cards-grid">
     <div class="card" *ngFor="let breed of breedList">
       <img [src]="breed.image.url" [alt]="breed.name" class="card__image" />
       <div class="card__content">
-        <h3 class="card__title" (click)="getDogDetails(breed)">{{breed.name}}</h3>
+        <h3 class="card__title" (click)="openDogInfo(breed)">{{breed.name}}</h3>
         <p class="card__subtitle">{{breed.origin ? breed.origin : 'Unknown'}}</p>
         <div class="card__actions">
-          <button class="btn btn-edit" (click)="modifyBreed(breed)">✏️ Modificar</button>
+          <button class="btn btn-edit" (click)="openAddModifyBreed(breed)">✏️ Modificar</button>
           <button class="btn btn-delete" (click)="deleteBreed(breed)">🗑️ Deletar</button>
         </div>
       </div>

@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalDogsInfoComponent } from '../../../components/modal-dogs-info/modal-dogs-info.component';
-import { ModalFormComponent } from '../../modal-form/modal-form.component';
+import { AddModifyBreedComponent } from '../../../components/add-modify-breed/add-modify-breed.component';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +17,7 @@ import { ModalFormComponent } from '../../modal-form/modal-form.component';
 export class HomeComponent implements OnInit {
   breeds: DogsBreed[] = [];
   breedSelected: DogsBreed | null = null;
-  breedDetailed: DogsBreedDetails | null = null; 
+  breedDetailed: DogsBreedDetails | null = null;
   breedFiltered: DogsBreed[] = [];
   constructor(
     private dogService: DogService,
@@ -28,8 +28,6 @@ export class HomeComponent implements OnInit {
     this.dogService.getDogsBreed().subscribe({
       next: (data: DogsBreed[]) => {
         this.breeds = data;
-        console.log(this.breeds);
-        
       }
     });
   }
@@ -51,20 +49,69 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  getDogDetails(breed:DogsBreed) {
-    this.dogService.getBreedDetails(breed.id).subscribe({
-      next: (data: DogsBreedDetails) => {
-        this.breedDetailed = data;
-        this.breedDetailed.reference_image_id = breed.image.url;
-      }
+  async getDogDetailsAsync(breed: DogsBreed): Promise<DogsBreedDetails> {
+    return new Promise((resolve, reject) => {
+      this.dogService.getBreedDetails(breed.id).subscribe({
+        next: (data: DogsBreedDetails) => {
+          data.reference_image_id = breed.image.url;
+          this.breedDetailed = data;
+          resolve(data);
+        },
+        error: err => reject(err)
+      });
     });
   }
 
-  openDogInfo(breed: DogsBreed) {
-    this.getDogDetails(breed);
+  async openDogInfo(breed: DogsBreed) {
+    const details = await this.getDogDetailsAsync(breed);
     const dialogRef = this.dialog.open(ModalDogsInfoComponent, {
       width: '400px',
-      data: this.breedDetailed
+      data: details
+    });
+  }
+
+  async openAddModifyBreed(breed: DogsBreed) {
+    const details = await this.getDogDetailsAsync(breed);
+    const dialogRef = this.dialog.open(AddModifyBreedComponent, {
+      width: '950px',
+      height: '600px',
+      data: details
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.breeds = this.breeds.map(breedItem => {
+        if (breedItem.id === result.id) {
+          return { ...breedItem, ...result };
+        }
+        return breedItem;
+      });
+    });
+  }
+
+  createNewBreed() {
+    const dialogRef = this.dialog.open(AddModifyBreedComponent, {
+      width: '950px',
+      height: '600px',
+      data: {
+        id: null,
+        name: '',
+        origin: '',
+        life_span: '',
+        temperament: '',
+        bred_for: '',
+        breed_group: '',
+        reference_image_id: null
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      let newBreed: DogsBreed = {
+        id: this.breeds.length + 1,
+        name: result.name,
+        origin: result.origin,
+        breed_group: result.breed_group,
+        image: { url: result.referenceImageId, id: result.referenceImageId, width: 0, height: 0 }
+      };      
+      this.breeds.unshift(newBreed);
     });
   }
 
